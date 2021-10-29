@@ -15,6 +15,7 @@ void PrintScreen();
 bool IsBorder(size_t row, size_t col);
 bool IsPlayersPosition(size_t row, size_t col);
 void Inputs();
+void HandleStart();
 
 // console screen
 char ConsoleScreen[ROWS_NUM][COLUMNS_NUM];
@@ -27,14 +28,13 @@ bool is_running = true;
 
 int main() 
 {
-    // fill the screen with corresponding chars
-    FillScreen();
+    HandleStart();
 
     while (is_running) 
     {
         // get player's inputs
         Inputs();
-        
+
         // print out the screen
         PrintScreen();
     }
@@ -42,6 +42,11 @@ int main()
     std::cout << "You have quited the game" << std::endl;
 }
 
+void HandleStart()
+{
+    FillScreen();
+    PrintScreen();
+}
 
 bool IsBorder(size_t row, size_t col)
 {
