@@ -9,8 +9,30 @@
 #define NORMAL_CHAR '-'
 #define PLAYER_CHAR '0'
 
+// define functions to use them before declaring
+void FillScreen();
+void PrintScreen();
+bool IsBorder(size_t row, size_t col);
+bool IsPlayersPosition(size_t row, size_t col);
 
-bool is_border(size_t row, size_t col)
+// console screen
+char ConsoleScreen[ROWS_NUM][COLUMNS_NUM];
+// player position
+int player_x = 10;
+int player_y = 10;
+
+
+int main() 
+{
+    // fill the screen with corresponding chars
+    FillScreen();
+
+    // print out the screen
+    PrintScreen();
+}
+
+
+bool IsBorder(size_t row, size_t col)
 {
     if (row == 0 
         || row == ROWS_NUM - 1 
@@ -20,14 +42,8 @@ bool is_border(size_t row, size_t col)
     return false;
 }
 
-int main() 
+void FillScreen()
 {
-    // console screen
-    char ConsoleScreen[ROWS_NUM][COLUMNS_NUM];
-    // player position
-    int player_x = 10;
-    int player_y = 10;
-
     // go throw rows
     for (size_t row = 0; row < ROWS_NUM; row++)
     {
@@ -35,24 +51,28 @@ int main()
         for (size_t col = 0; col < COLUMNS_NUM; col++)
         {
             // assign value to a cell
-            if (is_border(row, col)) 
+            if (IsBorder(row, col)) 
                 ConsoleScreen[row][col] = BORDER_CHAR;
             else 
                 ConsoleScreen[row][col] = NORMAL_CHAR;
         }
     }
+}
 
-    // put player to the screen
-    ConsoleScreen[player_x][player_y] = PLAYER_CHAR;
+bool IsPlayersPosition(size_t row, size_t col)
+{
+    if (row == player_y && col == player_x) return true;
+    return false;
+}
 
-
-    // print out the screen
+void PrintScreen() 
+{
     for (size_t row = 0; row < ROWS_NUM; row++)
     {
         for (size_t col = 0; col < COLUMNS_NUM; col++)
         {
-            // print cell's value out
-            std::cout << ConsoleScreen[row][col];
+            if (IsPlayersPosition(row, col)) std::cout << PLAYER_CHAR; // print player's char
+            else std::cout << ConsoleScreen[row][col]; // print cell's value out
         }
         std::cout << std::endl;
     }
