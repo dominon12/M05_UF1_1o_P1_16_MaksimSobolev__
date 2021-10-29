@@ -14,6 +14,7 @@ void FillScreen();
 void PrintScreen();
 bool IsBorder(size_t row, size_t col);
 bool IsPlayersPosition(size_t row, size_t col);
+void Inputs();
 
 // console screen
 char ConsoleScreen[ROWS_NUM][COLUMNS_NUM];
@@ -26,6 +27,9 @@ int main()
 {
     // fill the screen with corresponding chars
     FillScreen();
+
+    // get player's inputs
+    Inputs();
 
     // print out the screen
     PrintScreen();
@@ -75,5 +79,34 @@ void PrintScreen()
             else std::cout << ConsoleScreen[row][col]; // print cell's value out
         }
         std::cout << std::endl;
+    }
+}
+
+void Inputs()
+{
+    char input;
+
+    std::cin >> input;
+
+    switch(input)
+    {
+        case 'S':
+        case 's':
+            player_y++;
+            break;
+        case 'W':
+        case 'w':
+            player_y--;
+            break;
+        case 'D':
+        case 'd':
+            player_x++;
+            break;
+        case 'A':
+        case 'a':
+            player_x--;
+            break;
+        default:
+            break;
     }
 }
