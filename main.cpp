@@ -21,6 +21,8 @@ char ConsoleScreen[ROWS_NUM][COLUMNS_NUM];
 // player position
 int player_x = 10;
 int player_y = 10;
+// game state
+bool is_running = true;
 
 
 int main() 
@@ -28,11 +30,14 @@ int main()
     // fill the screen with corresponding chars
     FillScreen();
 
-    // get player's inputs
-    Inputs();
+    while (is_running) 
+    {
+        // get player's inputs
+        Inputs();
 
-    // print out the screen
-    PrintScreen();
+        // print out the screen
+        PrintScreen();
+    }
 }
 
 
@@ -105,6 +110,10 @@ void Inputs()
         case 'A':
         case 'a':
             player_x--;
+            break;
+        case 'Q':
+        case 'q':
+            is_running = false;
             break;
         default:
             break;
