@@ -34,10 +34,12 @@ int main()
     {
         // get player's inputs
         Inputs();
-
+        
         // print out the screen
         PrintScreen();
     }
+
+    std::cout << "You have quited the game" << std::endl;
 }
 
 
@@ -76,6 +78,9 @@ bool IsPlayersPosition(size_t row, size_t col)
 
 void PrintScreen() 
 {
+    // clear console
+    system("clear"); // user "clear" instead of "CLS" cos I'm using MacOS
+    
     for (size_t row = 0; row < ROWS_NUM; row++)
     {
         for (size_t col = 0; col < COLUMNS_NUM; col++)
