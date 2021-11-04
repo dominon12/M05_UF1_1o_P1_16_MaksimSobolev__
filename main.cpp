@@ -5,9 +5,8 @@
 #define COLUMNS_NUM 119
 
 // define cell's chars
-#define BORDER_CHAR '#'
-#define NORMAL_CHAR '-'
-#define PLAYER_CHAR '0'
+enum MAP_TILES { EMPTY = ' ', WALL = '#', POINT = '.', PLAYER = '0' };
+enum USER_INPUTS { NONE, UP, DOWN, RIGHT, LEFT, QUIT };
 
 // define functions to use them before declaring
 void FillScreen();
@@ -68,9 +67,9 @@ void FillScreen()
         {
             // assign value to a cell
             if (IsBorder(row, col)) 
-                ConsoleScreen[row][col] = BORDER_CHAR;
+                ConsoleScreen[row][col] = (char)WALL;
             else 
-                ConsoleScreen[row][col] = NORMAL_CHAR;
+                ConsoleScreen[row][col] = (char)EMPTY;
         }
     }
 }
@@ -90,7 +89,7 @@ void PrintScreen()
     {
         for (size_t col = 0; col < COLUMNS_NUM; col++)
         {
-            if (IsPlayersPosition(row, col)) std::cout << PLAYER_CHAR; // print player's char
+            if (IsPlayersPosition(row, col)) std::cout << (char)PLAYER; // print player's char
             else std::cout << ConsoleScreen[row][col]; // print cell's value out
         }
         std::cout << std::endl;
