@@ -15,6 +15,7 @@ bool IsBorder(size_t row, size_t col);
 bool IsPlayersPosition(size_t row, size_t col);
 void Inputs();
 void HandleStart();
+void HandleLogic();
 
 // console screen
 char ConsoleScreen[ROWS_NUM][COLUMNS_NUM];
@@ -23,6 +24,7 @@ int player_x = 10;
 int player_y = 10;
 // game state
 bool is_running = true;
+USER_INPUTS input = NONE;
 
 
 int main() 
@@ -31,10 +33,8 @@ int main()
 
     while (is_running) 
     {
-        // get player's inputs
         Inputs();
-
-        // print out the screen
+        HandleLogic();
         PrintScreen();
     }
 
@@ -98,33 +98,64 @@ void PrintScreen()
 
 void Inputs()
 {
-    char input;
+    char raw_input;
 
-    std::cin >> input;
+    std::cin >> raw_input;
 
-    switch(input)
+    switch(raw_input)
     {
         case 'S':
         case 's':
-            player_y++;
+            input = UP;
             break;
         case 'W':
         case 'w':
-            player_y--;
+            input = DOWN;
             break;
         case 'D':
         case 'd':
-            player_x++;
+            input = RIGHT;
             break;
         case 'A':
         case 'a':
-            player_x--;
+            input = LEFT;
             break;
         case 'Q':
         case 'q':
+            input = QUIT;
+            break;
+        default:
+            input = NONE;
+            break;
+    }
+}
+
+void HandleLogic() 
+{
+    int new_player_x = player_x;
+    int new_player_y = player_y;
+
+    switch (input) 
+    {
+        case UP:
+            new_player_y++;
+            break;
+        case DOWN:
+            new_player_y--;
+            break;
+        case RIGHT:
+            new_player_x++;
+            break;
+        case LEFT:
+            new_player_x--;
+            break;
+        case QUIT:
             is_running = false;
             break;
         default:
             break;
     }
+
+    player_x = new_player_x;
+    player_y = new_player_y;
 }
