@@ -4,22 +4,22 @@
 #define ROWS_NUM 29
 #define COLUMNS_NUM 119
 
-// define cell's chars
-enum MAP_TILES { EMPTY = ' ', WALL = '#', POINT = '.', PLAYER = '0' };
-enum USER_INPUTS { NONE, UP, DOWN, RIGHT, LEFT, QUIT };
-
 // define functions to use them before declaring
 void FillScreen();
-void PrintScreen();
 bool IsBorder(size_t row, size_t col);
+void HandleStart();
 bool IsPlayersPosition(size_t row, size_t col);
 void Inputs();
-void HandleStart();
 void HandleLogic();
+void PrintScreen();
+
+// define cell's chars
+enum MAP_TILES { EMPTY = ' ', WALL = '#', POINT = '.',PLAYER = '0' };
+enum USER_INPUTS { NONE, UP, DOWN, RIGHT, LEFT, QUIT };
 
 // console screen
-char ConsoleScreen[ROWS_NUM][COLUMNS_NUM];
-// player position
+MAP_TILES ConsoleScreen[ROWS_NUM][COLUMNS_NUM];
+// player's position
 int player_x = 10;
 int player_y = 10;
 // game state
@@ -38,62 +38,7 @@ int main()
         PrintScreen();
     }
 
-    std::cout << "You have quited the game" << std::endl;
-}
-
-void HandleStart()
-{
-    FillScreen();
-    PrintScreen();
-}
-
-bool IsBorder(size_t row, size_t col)
-{
-    if (row == 0 
-        || row == ROWS_NUM - 1 
-        || col == 0 
-        || col == COLUMNS_NUM - 1) 
-        return true;
-    return false;
-}
-
-void FillScreen()
-{
-    // go throw rows
-    for (size_t row = 0; row < ROWS_NUM; row++)
-    {
-        // go throw columns
-        for (size_t col = 0; col < COLUMNS_NUM; col++)
-        {
-            // assign value to a cell
-            if (IsBorder(row, col)) 
-                ConsoleScreen[row][col] = (char)WALL;
-            else 
-                ConsoleScreen[row][col] = (char)EMPTY;
-        }
-    }
-}
-
-bool IsPlayersPosition(size_t row, size_t col)
-{
-    if (row == player_y && col == player_x) return true;
-    return false;
-}
-
-void PrintScreen() 
-{
-    // clear console
-    system("clear"); // user "clear" instead of "CLS" cos I'm using MacOS
-    
-    for (size_t row = 0; row < ROWS_NUM; row++)
-    {
-        for (size_t col = 0; col < COLUMNS_NUM; col++)
-        {
-            if (IsPlayersPosition(row, col)) std::cout << (char)PLAYER; // print player's char
-            else std::cout << ConsoleScreen[row][col]; // print cell's value out
-        }
-        std::cout << std::endl;
-    }
+    std::cout << "You have quited the game's loop" << std::endl;
 }
 
 void Inputs()
@@ -156,6 +101,64 @@ void HandleLogic()
             break;
     }
 
-    player_x = new_player_x;
-    player_y = new_player_y;
+    if (!IsBorder(new_player_y, new_player_x)) 
+    {
+        player_x = new_player_x;
+        player_y = new_player_y;
+    }
+}
+
+void PrintScreen() 
+{
+    // clear console
+    system("clear"); // user "clear" instead of "CLS" cos I'm using MacOS
+    
+    for (size_t row = 0; row < ROWS_NUM; row++)
+    {
+        for (size_t col = 0; col < COLUMNS_NUM; col++)
+        {
+            if (IsPlayersPosition(row, col)) std::cout << (char)PLAYER; // print player's char
+            else std::cout << (char)ConsoleScreen[row][col]; // print cell's value out
+        }
+        std::cout << std::endl;
+    }
+}
+
+void HandleStart()
+{
+    FillScreen();
+    PrintScreen();
+}
+
+bool IsBorder(size_t row, size_t col)
+{
+    if (row == 0 
+        || row == ROWS_NUM - 1 
+        || col == 0 
+        || col == COLUMNS_NUM - 1) 
+        return true;
+    return false;
+}
+
+void FillScreen()
+{
+    // go throw rows
+    for (size_t row = 0; row < ROWS_NUM; row++)
+    {
+        // go throw columns
+        for (size_t col = 0; col < COLUMNS_NUM; col++)
+        {
+            // assign value to a cell
+            if (IsBorder(row, col)) 
+                ConsoleScreen[row][col] = WALL;
+            else 
+                ConsoleScreen[row][col] = EMPTY;
+        }
+    }
+}
+
+bool IsPlayersPosition(size_t row, size_t col)
+{
+    if (row == player_y && col == player_x) return true;
+    return false;
 }
