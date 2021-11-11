@@ -2,7 +2,7 @@
 
 // define screen's shape
 #define ROWS_NUM 29
-#define COLUMNS_NUM 119
+#define COLUMNS_NUM 69
 
 // define functions to use them before declaring
 void FillScreen();
@@ -106,11 +106,24 @@ void HandleLogic()
             break;
     }
 
+    // handle teleportation
+    if (new_player_x < 0) {
+        new_player_x = COLUMNS_NUM - 1;
+    } else if (new_player_x > COLUMNS_NUM) {
+        new_player_x = 0;
+    }
+
+    if (new_player_y < 0) {
+        new_player_y = ROWS_NUM - 1;
+    } else if (new_player_y > ROWS_NUM) {
+        new_player_y = 0;
+    }
+
     // process collisions
     switch (ConsoleScreen[new_player_y][new_player_x]) {
         case WALL: // wall collistion
-            new_player_x = player_x;
-            new_player_y = player_y;
+            new_player_x = player_x - ROWS_NUM;
+            new_player_y = player_y - COLUMNS_NUM;
             break;
         case POINT: // point collision
             player_points++;
@@ -184,6 +197,76 @@ void InsertPoints()
     map_points = ROW_LENGTH;
 }
 
+void InsertTeleportationPaths() 
+{
+    const int ROW_LENGTH = 46;
+    const int COL_LENGTH = 2;
+
+    int column_center = COLUMNS_NUM / 2;
+
+    int points_map[ROW_LENGTH][COL_LENGTH] = {
+        // left top
+        {3, 0}, 
+        {4, 0},
+        {5, 0},
+        // left bottom
+        {3, COLUMNS_NUM - 1}, 
+        {4, COLUMNS_NUM - 1},
+        {5, COLUMNS_NUM - 1},
+        // right top
+        {ROWS_NUM - 4, 0}, 
+        {ROWS_NUM - 5, 0},
+        {ROWS_NUM - 6, 0},
+        // right bottom
+        {ROWS_NUM - 4, COLUMNS_NUM - 1}, 
+        {ROWS_NUM - 5, COLUMNS_NUM - 1},
+        {ROWS_NUM - 6, COLUMNS_NUM - 1},
+        // top center
+        {0, column_center}, 
+        {0, column_center + 1},
+        {0, column_center + 2},
+        {0, column_center + 3},
+        {0, column_center + 4},
+        {0, column_center + 5},
+        {0, column_center + 6},
+        {0, column_center + 7},
+        {0, column_center + 8},
+        {0, column_center - 1},
+        {0, column_center - 2},
+        {0, column_center - 3},
+        {0, column_center - 4},
+        {0, column_center - 5},
+        {0, column_center - 6},
+        {0, column_center - 7},
+        {0, column_center - 8},
+        // bottom center
+        {ROWS_NUM - 1, column_center}, 
+        {ROWS_NUM - 1, column_center + 1},
+        {ROWS_NUM - 1, column_center + 2},
+        {ROWS_NUM - 1, column_center + 3},
+        {ROWS_NUM - 1, column_center + 4},
+        {ROWS_NUM - 1, column_center + 5},
+        {ROWS_NUM - 1, column_center + 6},
+        {ROWS_NUM - 1, column_center + 7},
+        {ROWS_NUM - 1, column_center + 8},
+        {ROWS_NUM - 1, column_center - 1},
+        {ROWS_NUM - 1, column_center - 2},
+        {ROWS_NUM - 1, column_center - 3},
+        {ROWS_NUM - 1, column_center - 4},
+        {ROWS_NUM - 1, column_center - 5},
+        {ROWS_NUM - 1, column_center - 6},
+        {ROWS_NUM - 1, column_center - 7},
+        {ROWS_NUM - 1, column_center - 8},
+    };
+    
+    for (size_t row = 0; row < ROW_LENGTH; row++)
+    {
+        int row_num = points_map[row][0];
+        int col_num = points_map[row][1];
+        ConsoleScreen[row_num][col_num] = EMPTY;
+    }   
+}
+
 void FillScreen()
 {
     // fills the screen with predetermined values
@@ -202,6 +285,7 @@ void FillScreen()
         }
     }
     InsertPoints();
+    InsertTeleportationPaths();
 }
 
 bool IsPlayersPosition(size_t row, size_t col)
