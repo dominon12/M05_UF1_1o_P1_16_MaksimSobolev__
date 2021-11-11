@@ -147,6 +147,26 @@ bool IsBorder(size_t row, size_t col)
     return false;
 }
 
+void InsertPoints()
+{
+    // inserts points to the map
+    const int ROW_LENGTH = 4;
+    const int COL_LENGTH = 2;
+
+    int points_map[ROW_LENGTH][COL_LENGTH] = {
+        {5, 5}, 
+        {8, 17},
+        {10, 23},
+        {2, 7}
+    };
+    for (size_t row = 0; row < ROW_LENGTH; row++)
+    {
+        int row_num = points_map[row][0];
+        int col_num = points_map[row][1];
+        ConsoleScreen[row_num][col_num] = POINT;
+}
+}
+
 void FillScreen()
 {
     // fills the screen with predetermined values
@@ -164,6 +184,7 @@ void FillScreen()
                 ConsoleScreen[row][col] = EMPTY;
         }
     }
+    InsertPoints();
 }
 
 bool IsPlayersPosition(size_t row, size_t col)
