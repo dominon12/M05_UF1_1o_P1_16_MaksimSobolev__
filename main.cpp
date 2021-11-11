@@ -29,6 +29,7 @@ USER_INPUTS input = NONE;
 
 int main() 
 {
+    // main function which handles all the game's flow
     HandleStart();
 
     while (is_running) 
@@ -43,6 +44,7 @@ int main()
 
 void Inputs()
 {
+    // gets inputs from the player and assigns needed value to input variable
     char raw_input;
 
     std::cin >> raw_input;
@@ -77,6 +79,7 @@ void Inputs()
 
 void HandleLogic() 
 {
+    // handles all the game logic
     int new_player_x = player_x;
     int new_player_y = player_y;
 
@@ -110,6 +113,8 @@ void HandleLogic()
 
 void PrintScreen() 
 {
+    // prints matrix of values to the screen
+
     // clear console
     system("clear"); // user "clear" instead of "CLS" cos I'm using MacOS
     
@@ -126,12 +131,14 @@ void PrintScreen()
 
 void HandleStart()
 {
+    // handles game's start
     FillScreen();
     PrintScreen();
 }
 
 bool IsBorder(size_t row, size_t col)
 {
+    // returns true if one of passed coordinates is at the border. In other case returns false
     if (row == 0 
         || row == ROWS_NUM - 1 
         || col == 0 
@@ -142,6 +149,8 @@ bool IsBorder(size_t row, size_t col)
 
 void FillScreen()
 {
+    // fills the screen with predetermined values
+
     // go throw rows
     for (size_t row = 0; row < ROWS_NUM; row++)
     {
@@ -159,6 +168,7 @@ void FillScreen()
 
 bool IsPlayersPosition(size_t row, size_t col)
 {
+    // returns true if passed coordinates corresponds to players' ones. If not, returns false.
     if (row == player_y && col == player_x) return true;
     return false;
 }
