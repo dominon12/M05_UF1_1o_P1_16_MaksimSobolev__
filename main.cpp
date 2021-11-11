@@ -105,17 +105,16 @@ void ApplyInputToPosition(int &new_player_x, int &new_player_y)
 
 void HandleTeleportation(int &new_player_x, int &new_player_y) 
 {
+    // x axis
     if (new_player_x < 0) {
         new_player_x = COLUMNS_NUM - 1;
-    } else if (new_player_x > COLUMNS_NUM) {
-        new_player_x = 0;
-    }
-
+    } 
+    new_player_x %= COLUMNS_NUM;
+    // y axis
     if (new_player_y < 0) {
         new_player_y = ROWS_NUM - 1;
-    } else if (new_player_y > ROWS_NUM) {
-        new_player_y = 0;
-    }
+    } 
+    new_player_y %= ROWS_NUM;
 }
 
 void ProcessCollisions(int &new_player_x, int &new_player_y) 
