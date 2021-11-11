@@ -79,12 +79,8 @@ void Inputs()
     }
 }
 
-void HandleLogic() 
+void ApplyInputToPosition(int &new_player_x, int &new_player_y) 
 {
-    // handles all the game logic
-    int new_player_x = player_x;
-    int new_player_y = player_y;
-
     switch (input) 
     {
         case UP:
@@ -105,8 +101,10 @@ void HandleLogic()
         default:
             break;
     }
+}
 
-    // handle teleportation
+void HandleTeleportation(int &new_player_x, int &new_player_y) 
+{
     if (new_player_x < 0) {
         new_player_x = COLUMNS_NUM - 1;
     } else if (new_player_x > COLUMNS_NUM) {
@@ -118,8 +116,10 @@ void HandleLogic()
     } else if (new_player_y > ROWS_NUM) {
         new_player_y = 0;
     }
+}
 
-    // process collisions
+void ProcessCollisions(int &new_player_x, int &new_player_y) 
+{
     switch (ConsoleScreen[new_player_y][new_player_x]) {
         case WALL: // wall collistion
             new_player_x = player_x - ROWS_NUM;
@@ -133,16 +133,23 @@ void HandleLogic()
         default:
             break;
     }
+}
 
-    // assign new player position
+void HandleLogic() 
+{
+    int new_player_x = player_x;
+    int new_player_y = player_y;
+
+    ApplyInputToPosition(new_player_x, new_player_y);
+    HandleTeleportation(new_player_x, new_player_y);
+    ProcessCollisions(new_player_x, new_player_y);
+
     player_x = new_player_x;
     player_y = new_player_y;
 }
 
 void PrintScreen() 
 {
-    // prints matrix of values to the screen
-
     // clear console
     system("clear"); // user "clear" instead of "CLS" cos I'm using MacOS
     
@@ -258,7 +265,7 @@ void InsertTeleportationPaths()
         {ROWS_NUM - 1, column_center - 7},
         {ROWS_NUM - 1, column_center - 8},
     };
-    
+
     for (size_t row = 0; row < ROW_LENGTH; row++)
     {
         int row_num = points_map[row][0];
