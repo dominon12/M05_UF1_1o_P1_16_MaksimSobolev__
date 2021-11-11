@@ -19,9 +19,11 @@ enum USER_INPUTS { NONE, UP, DOWN, RIGHT, LEFT, QUIT };
 
 // console screen
 MAP_TILES ConsoleScreen[ROWS_NUM][COLUMNS_NUM];
-// player's position
+int map_points = 0;
+// player values
 int player_x = 10;
 int player_y = 10;
+int player_points = 0;
 // game state
 bool is_running = true;
 USER_INPUTS input = NONE;
@@ -104,11 +106,24 @@ void HandleLogic()
             break;
     }
 
-    if (!IsBorder(new_player_y, new_player_x)) 
-    {
-        player_x = new_player_x;
-        player_y = new_player_y;
+    // process collisions
+    switch (ConsoleScreen[new_player_y][new_player_x]) {
+        case WALL: // wall collistion
+            new_player_x = player_x;
+            new_player_y = player_y;
+            break;
+        case POINT: // point collision
+            player_points++;
+            map_points--;
+            ConsoleScreen[new_player_y][new_player_x] = EMPTY;
+            break;
+        default:
+            break;
     }
+
+    // assign new player position
+    player_x = new_player_x;
+    player_y = new_player_y;
 }
 
 void PrintScreen() 
@@ -164,7 +179,9 @@ void InsertPoints()
         int row_num = points_map[row][0];
         int col_num = points_map[row][1];
         ConsoleScreen[row_num][col_num] = POINT;
-}
+    }
+
+    map_points = ROW_LENGTH;
 }
 
 void FillScreen()
