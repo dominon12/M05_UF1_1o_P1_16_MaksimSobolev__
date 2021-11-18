@@ -147,11 +147,23 @@ void HandleLogic()
     player_y = new_player_y;
 }
 
+void PrintPoints()
+{
+    std::cout 
+        << "Points collected: " 
+        << player_points 
+        << "/" 
+        << player_points + map_points 
+        << "\n";
+}
+
 void PrintScreen() 
 {
     // clear console
     system("clear"); // user "clear" instead of "CLS" cos I'm using MacOS
     
+    PrintPoints();
+
     for (size_t row = 0; row < ROWS_NUM; row++)
     {
         for (size_t col = 0; col < COLUMNS_NUM; col++)
