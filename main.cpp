@@ -26,6 +26,7 @@ int player_y = 10;
 int player_points = 0;
 // game state
 bool is_running = true;
+bool player_won = false;
 USER_INPUTS input = NONE;
 
 
@@ -34,14 +35,15 @@ int main()
     // main function which handles all the game's flow
     HandleStart();
 
-    while (is_running) 
+    while (is_running & !player_won) 
     {
         Inputs();
         HandleLogic();
         PrintScreen();
     }
 
-    std::cout << "You have quited the game's loop" << std::endl;
+    if (player_won) std::cout << "YOU WON!\n";
+    else std::cout << "You have quited the game's loop\n";
 }
 
 void Inputs()
@@ -134,6 +136,11 @@ void ProcessCollisions(int &new_player_x, int &new_player_y)
     }
 }
 
+void HandleTrackPlayerProgress()
+{
+    if (map_points == 0) player_won = true;
+}
+
 void HandleLogic() 
 {
     int new_player_x = player_x;
@@ -142,6 +149,7 @@ void HandleLogic()
     ApplyInputToPosition(new_player_x, new_player_y);
     HandleTeleportation(new_player_x, new_player_y);
     ProcessCollisions(new_player_x, new_player_y);
+    HandleTrackPlayerProgress();
 
     player_x = new_player_x;
     player_y = new_player_y;
