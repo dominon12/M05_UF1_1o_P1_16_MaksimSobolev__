@@ -195,7 +195,7 @@ void PrintScreen()
         for (size_t col = 0; col < COLUMNS_NUM; col++)
         {
             if (IsPlayersPosition(row, col)) std::cout << (char)PLAYER; // print player's char
-            else std::cout << (char)ConsoleScreen[row][col]; // print cell's value out
+            else std::cout << "\x1B[31m" << (char)ConsoleScreen[row][col] << "\033[0m"; // print cell's value out
         }
         std::cout << std::endl;
     }
