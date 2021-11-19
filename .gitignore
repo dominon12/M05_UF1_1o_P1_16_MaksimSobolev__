@@ -1,0 +1,8 @@
+# Compiled files
+main
+
+# git
+.git/
+
+# IDE 
+.vscode/
