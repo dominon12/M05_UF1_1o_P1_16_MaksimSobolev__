@@ -186,7 +186,7 @@ void PrintScreen()
     // prints the screen out to console
 
     // clear console
-    system("clear"); // user "clear" instead of "CLS" cos I'm using MacOS
+    system("CLS"); 
     
     PrintPoints();
 
