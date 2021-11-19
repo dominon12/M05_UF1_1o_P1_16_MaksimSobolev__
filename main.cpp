@@ -33,6 +33,7 @@ USER_INPUTS input = NONE;
 int main() 
 {
     // main function which handles all the game's flow
+    
     HandleStart();
 
     while (is_running & !player_won) 
@@ -49,6 +50,7 @@ int main()
 void Inputs()
 {
     // gets inputs from the player and assigns needed value to input variable
+
     char raw_input;
 
     std::cin >> raw_input;
@@ -83,6 +85,8 @@ void Inputs()
 
 void ApplyInputToPosition(int &new_player_x, int &new_player_y) 
 {
+    // changes player's position based on input variable
+
     switch (input) 
     {
         case UP:
@@ -107,6 +111,8 @@ void ApplyInputToPosition(int &new_player_x, int &new_player_y)
 
 void HandleTeleportation(int &new_player_x, int &new_player_y) 
 {
+    // teleports player if needed
+
     // x axis
     if (new_player_x < 0) {
         new_player_x = COLUMNS_NUM - 1;
@@ -121,6 +127,8 @@ void HandleTeleportation(int &new_player_x, int &new_player_y)
 
 void ProcessCollisions(int &new_player_x, int &new_player_y) 
 {
+    // processes collisions with walls and points
+
     switch (ConsoleScreen[new_player_y][new_player_x]) {
         case WALL: // wall collistion
             new_player_x = player_x - ROWS_NUM;
@@ -138,11 +146,17 @@ void ProcessCollisions(int &new_player_x, int &new_player_y)
 
 void HandleTrackPlayerProgress()
 {
+    // keeps track of map_points variable and 
+    // sets player_won variable to true 
+    // if player has collected all the points
+
     if (map_points == 0) player_won = true;
 }
 
 void HandleLogic() 
 {
+    // handles all the game's logic
+
     int new_player_x = player_x;
     int new_player_y = player_y;
 
@@ -157,6 +171,8 @@ void HandleLogic()
 
 void PrintPoints()
 {
+    // prints out the string with player's collected points
+
     std::cout 
         << "Points collected: " 
         << player_points 
@@ -167,6 +183,8 @@ void PrintPoints()
 
 void PrintScreen() 
 {
+    // prints the screen out to console
+
     // clear console
     system("clear"); // user "clear" instead of "CLS" cos I'm using MacOS
     
@@ -186,13 +204,16 @@ void PrintScreen()
 void HandleStart()
 {
     // handles game's start
+
     FillScreen();
     PrintScreen();
 }
 
 bool IsBorder(size_t row, size_t col)
 {
-    // returns true if one of passed coordinates is at the border. In other case returns false
+    // returns true if one of the passed coordinates is at the border.
+    // In other case returns false
+
     if (row == 0 
         || row == ROWS_NUM - 1 
         || col == 0 
@@ -204,15 +225,19 @@ bool IsBorder(size_t row, size_t col)
 void InsertPoints()
 {
     // inserts points to the map
+
     const int ROW_LENGTH = 4;
     const int COL_LENGTH = 2;
 
+    // declare points map and assign points' coordinates
     int points_map[ROW_LENGTH][COL_LENGTH] = {
         {5, 5}, 
         {8, 17},
         {10, 23},
         {2, 7}
     };
+
+    // loop over the points map and insert points to the console screen
     for (size_t row = 0; row < ROW_LENGTH; row++)
     {
         int row_num = points_map[row][0];
@@ -220,17 +245,22 @@ void InsertPoints()
         ConsoleScreen[row_num][col_num] = POINT;
     }
 
+    // assigns amount of points to map_points variable
     map_points = ROW_LENGTH;
 }
 
 void InsertTeleportationPaths() 
 {
+    // replaces some borders with empty tiles (portals)
+
     const int ROW_LENGTH = 46;
     const int COL_LENGTH = 2;
 
+    // calculate the center of the column
     int column_center = COLUMNS_NUM / 2;
 
-    int points_map[ROW_LENGTH][COL_LENGTH] = {
+    // declare portals map and assign coordinates of empty tiles 
+    int portals_map[ROW_LENGTH][COL_LENGTH] = {
         // left top
         {3, 0}, 
         {4, 0},
@@ -285,10 +315,11 @@ void InsertTeleportationPaths()
         {ROWS_NUM - 1, column_center - 8},
     };
 
+    // loop over the portals and insert portals to console screen
     for (size_t row = 0; row < ROW_LENGTH; row++)
     {
-        int row_num = points_map[row][0];
-        int col_num = points_map[row][1];
+        int row_num = portals_map[row][0];
+        int col_num = portals_map[row][1];
         ConsoleScreen[row_num][col_num] = EMPTY;
     }   
 }
@@ -297,10 +328,10 @@ void FillScreen()
 {
     // fills the screen with predetermined values
 
-    // go throw rows
+    // go over rows
     for (size_t row = 0; row < ROWS_NUM; row++)
     {
-        // go throw columns
+        // go over columns
         for (size_t col = 0; col < COLUMNS_NUM; col++)
         {
             // assign value to a cell
@@ -316,7 +347,9 @@ void FillScreen()
 
 bool IsPlayersPosition(size_t row, size_t col)
 {
-    // returns true if passed coordinates corresponds to players' ones. If not, returns false.
+    // returns true if passed coordinates corresponds to players' ones. 
+    // If not, returns false.
+
     if (row == player_y && col == player_x) return true;
     return false;
 }
