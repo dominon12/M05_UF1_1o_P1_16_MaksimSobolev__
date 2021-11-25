@@ -7,7 +7,7 @@
 // define functions to use them before declaring
 void FillScreen();
 bool IsBorder(size_t row, size_t col);
-void HandleStart();
+void Setup();
 bool IsPlayersPosition(size_t row, size_t col);
 void Inputs();
 void HandleLogic();
@@ -34,9 +34,9 @@ int main()
 {
     // main function which handles all the game's flow
     
-    HandleStart();
+    Setup();
 
-    while (is_running & !player_won) 
+    while (is_running) 
     {
         Inputs();
         HandleLogic();
@@ -186,7 +186,7 @@ void PrintScreen()
     // prints the screen out to console
 
     // clear console
-    system("CLS"); 
+    system("clear"); 
     
     PrintPoints();
 
@@ -195,13 +195,13 @@ void PrintScreen()
         for (size_t col = 0; col < COLUMNS_NUM; col++)
         {
             if (IsPlayersPosition(row, col)) std::cout << (char)PLAYER; // print player's char
-            else std::cout << "\x1B[31m" << (char)ConsoleScreen[row][col] << "\033[0m"; // print cell's value out
+            else std::cout << (char)ConsoleScreen[row][col]; // print cell's value out
         }
         std::cout << std::endl;
     }
 }
 
-void HandleStart()
+void Setup()
 {
     // handles game's start
 
